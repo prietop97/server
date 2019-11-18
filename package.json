@@ -1,0 +1,41 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Back end portion of Macro Calculator",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch",
+    "server": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Macroculator/server.git"
+  },
+  "keywords": [],
+  "author": "Dominique Maack and Hector Martinez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Macroculator/server/issues"
+  },
+  "homepage": "https://github.com/Macroculator/server#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.2",
+    "sqlite3": "^4.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
+  }
+}
