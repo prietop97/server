@@ -9,7 +9,7 @@ exports.up = function(knex) {
               .unsigned()
               .notNullable()
               .references('id')
-              .inTable('user-update')
+              .inTable('users')
               .onUpdate('CASCADE')
               .onDelete('CASCADE');
           tbl
@@ -48,4 +48,4 @@ exports.up = function(knex) {
     return knex.schema
       .dropTableIfExists('info')
   };
-  
+
