@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
     return knex.schema
-      .createTable('user-info', tbl => {
+      .createTable('info', tbl => {
           tbl.increments();
   
           tbl 
@@ -9,7 +9,7 @@ exports.up = function(knex) {
               .unsigned()
               .notNullable()
               .references('id')
-              .inTable('users')
+              .inTable('user-update')
               .onUpdate('CASCADE')
               .onDelete('CASCADE');
           tbl
@@ -46,6 +46,6 @@ exports.up = function(knex) {
   
   exports.down = function(knex) {
     return knex.schema
-      .dropTableIfExists('user-info')
+      .dropTableIfExists('info')
   };
   
