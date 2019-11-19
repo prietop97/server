@@ -68,7 +68,7 @@ router.post('/', restricted, (req, res) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(500).json({ error: 'Unable to POST user information to the database'})
+                res.status(500).json({ err, error: 'Unable to POST user information to the database'})
             })
     }
 })
