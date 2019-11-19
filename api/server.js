@@ -19,6 +19,5 @@ server.get('/', (req, res) => {
     res.send('Server is working')
 })
 
-// server.use(auth);
 
 module.exports = server;
