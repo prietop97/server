@@ -7,6 +7,7 @@ const { validateAuthBody } = require('./auth-helpers');
 
 router.post('/register', (req, res) => {
     let user = req.body;
+    user.username = user.username.toLowerCase() 
     const validateAuthResult = validateAuthBody(user) 
 
     if(validateAuthResult.isSuccessful) {
@@ -16,9 +17,11 @@ router.post('/register', (req, res) => {
       Users.add(user)
         .then(saved => {
           const token = getJwtToken(saved);
-          res.status(201).json({ username: saved.username, token});
+          console.log(saved)
+          res.status(201).json({ user_id: saved.id, fullname: saved.fullname, username: saved.username, token});
         })
         .catch(error => {
+          console.log(error)
           res.status(500).json({ error: 'Unable to insert user to database'});
         });
     } else {
@@ -31,7 +34,10 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    let { username, password } = req.body;
+    req.body.username = req.body.username.toLowerCase(); 
+    let {username, password } = req.body;
+    
+    console.log(username)
   
     Users.findBy({ username })
       .first()
@@ -42,6 +48,8 @@ router.post('/login', (req, res) => {
   
           //send the token to the client
           res.status(200).json({
+            user_id: user.id,
+            fullname: user.fullname,
             username: user.username,
             token
           });
