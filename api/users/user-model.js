@@ -24,7 +24,7 @@ function find() {
 
 function findById(id) {
     return db('info')
-    .select('id', 'birthdate_day', 'birthdate_month', 'birthdate_year', 'gender', 'birthdate_day', 'height', 'weight', 'activity_factor', 'meals_per_day', 'snacks_per_day', 'goal_multiplier')
+    .select('id', 'birthdate_day', 'birthdate_month', 'birthdate_year', 'gender', 'height', 'weight', 'activity_factor', 'meals_per_day', 'snacks_per_day', 'goal_multiplier')
     .where({ id })
     .first();
 }
