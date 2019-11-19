@@ -11,7 +11,8 @@ router.post('/register', (req, res) => {
 
     Users.add(user)
     .then(saved => {
-      res.status(201).json(saved);
+      const token = getJwtToken(saved);
+      res.status(201).json({ username: saved.username, token});
     })
     .catch(error => {
       res.status(500).json(error);
@@ -43,6 +44,7 @@ router.post('/login', (req, res) => {
   });
   
   function getJwtToken(user) {
+    console.log('getJWtToken',user)
     const payload = {
       user
     };
@@ -50,7 +52,7 @@ router.post('/login', (req, res) => {
     const secret = process.env.JWT_SECRET || "is it secret";
   
     const options = {
-      expiresIn: '1d'
+      expiresIn: '8hr'
     }
   
     return jwt.sign(payload, secret, options);

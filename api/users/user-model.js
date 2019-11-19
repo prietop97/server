@@ -13,7 +13,7 @@ function add(info) {
     return db('info')
     .insert(info)
     .then(id => {
-        return findById(id[0])
+        return findById(id)
     })
 }
 
