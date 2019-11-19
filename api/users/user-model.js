@@ -13,7 +13,7 @@ function add(info) {
     return db('info')
     .insert(info)
     .then(id => {
-        return findById(id)
+        return findById(id[0])
     })
 }
 
@@ -23,6 +23,7 @@ function find() {
 
 function findById(id) {
     return db('info')
+    .select('id', 'first_name', 'last_name', 'gender', 'age', 'height', 'weight', 'activity_factor', 'meals_per_day', 'snacks_per_day', 'goal_multiplier')
     .where({ id })
     .first();
 }
@@ -31,6 +32,9 @@ function update(id, changes) {
     return db('info')
         .where({ id })
         .update(changes)
+        .then(res => {
+            return findById(id)
+        })
 }
 
 function remove(id) {
