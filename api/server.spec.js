@@ -12,7 +12,7 @@ describe("server", function() {
             });
         });
 
-        it("should return 200", function() {
+        it("this should also return 200", function() {
             return request(server)
             .get('/')
             .then(res => {

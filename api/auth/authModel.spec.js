@@ -8,7 +8,7 @@ describe('auth model', function() {
             await db('users').truncate();
         });
 
-        it('should add a user', async function() {
+        it('this adds a user', async function() {
             await add({ username: 'Bob', password: 'password' });
 
             const users = await db('users');
