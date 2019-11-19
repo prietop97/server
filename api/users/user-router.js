@@ -4,13 +4,32 @@ const restricted = require('../auth/restricted');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/all', (req, res) => {
     Info.find()
         .then(success => {
             res.status(200).json(success)
         })
         .catch(err => {
             res.status(500).json(err)
+        })
+})
+
+router.get('/', restricted, (req, res) => {
+    req.body.user_id = req.user.id;
+
+    Info.findByUserID(req.user.id)
+        .then(info => {
+            console.log('info', info)
+            if(info){
+                res.status(200).json(info)
+            } else {
+                res.status(400).json({ error: `No user information attached with user id ${req.user.id} ` })
+            }
+            
+        })
+        .catch(err => {
+            console.log('err', err)
+            res.status(500).json({error: 'Unable to GET user info'})
         })
 })
 
