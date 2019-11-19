@@ -19,10 +19,17 @@ router.get('/:id', restricted, (req, res) => {
 
     Info.findById(id)
         .then(info => {
-            res.status(200).json(info)
+            console.log('info', info)
+            if(info){
+                res.status(200).json(info)
+            } else {
+                res.status(400).json({ error: `No user information attached with user id ${id} ` })
+            }
+            
         })
         .catch(err => {
-            res.status(500).json({ error: `No user information attached with user id ${id} `})
+            console.log('err', err)
+            res.status(500).json({error: 'Unable to GET user info'})
         })
 })
 
@@ -37,10 +44,11 @@ router.post('/', restricted, (req, res) => {
     } else {
         Info.add(req.body)
             .then(saved => {
+                console.log('saved post', saved)
                 res.status(201).json(saved)
             })
             .catch(err => {
-                res.status(500).json(err)
+                res.status(500).json({ error: 'Unable to POST user information to the database'})
             })
     }
 })
@@ -57,7 +65,7 @@ router.put('/:id', restricted, (req, res) => {
                 res.status(201).json(saved)
             })
             .catch(err => {
-                res.status(500).json(err)
+                res.status(500).json({ error: 'Unable to PUT user information to the database'})
             })
     }
 })
@@ -67,10 +75,15 @@ router.delete('/:id', restricted, (req, res) => {
 
     Info.remove(id)
         .then(del => {
-            res.status(200).json({ message: `You successfully delete the user information with the ID ${id}`})
+            if(del) {
+                res.status(200).json({ message: `You successfully delete the user information with the ID ${id}` })
+            } else {
+                res.status(400).json({ error: `User with id ${id} does not exist` })
+            }
+            
         })
         .catch(err => {
-            res.status(500).json(err)
+            res.status(500).json({ error: 'Unable to DELETE user information from the database' })
         })
 })
 
