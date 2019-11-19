@@ -3,19 +3,31 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Users = require('./auth-model');
+const { validateAuthBody } = require('./auth-helpers');
 
 router.post('/register', (req, res) => {
     let user = req.body;
-    const hash = bcrypt.hashSync(user.password, 10);
-    user.password = hash;
+    const validateAuthResult = validateAuthBody(user) 
 
-    Users.add(user)
-    .then(saved => {
-      res.status(201).json(saved);
-    })
-    .catch(error => {
-      res.status(500).json(error);
-    });
+    if(validateAuthResult.isSuccessful) {
+      const hash = bcrypt.hashSync(user.password, 10);
+      user.password = hash;
+
+      Users.add(user)
+        .then(saved => {
+          const token = getJwtToken(saved);
+          res.status(201).json({ username: saved.username, token});
+        })
+        .catch(error => {
+          res.status(500).json({ error: 'Unable to insert user to database'});
+        });
+    } else {
+      res.status(400).json({
+        message: 'Invalid user information, see error details',
+        errors: validateAuthResult.errors
+      })
+    }
+    
 })
 
 router.post('/login', (req, res) => {
@@ -30,7 +42,7 @@ router.post('/login', (req, res) => {
   
           //send the token to the client
           res.status(200).json({
-            message: `Welcome ${user.username}!`,
+            username: user.username,
             token
           });
         } else {
@@ -38,11 +50,12 @@ router.post('/login', (req, res) => {
         }
       })
       .catch(error => {
-        res.status(500).json(error);
+        res.status(500).json({error: 'Unable to retrieve user from database'});
       });
   });
   
   function getJwtToken(user) {
+    console.log('getJWtToken',user)
     const payload = {
       user
     };
@@ -50,7 +63,7 @@ router.post('/login', (req, res) => {
     const secret = process.env.JWT_SECRET || "is it secret";
   
     const options = {
-      expiresIn: '1d'
+      expiresIn: '8hr'
     }
   
     return jwt.sign(payload, secret, options);

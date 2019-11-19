@@ -9,7 +9,7 @@ exports.up = function(knex) {
               .unsigned()
               .notNullable()
               .references('id')
-              .inTable('user-update')
+              .inTable('users')
               .onUpdate('CASCADE')
               .onDelete('CASCADE');
           tbl
@@ -37,6 +37,7 @@ exports.up = function(knex) {
               .notNullable();
           tbl
               .integer('snacks_per_day')
+              .notNullable();
           tbl 
               .float('goal_multiplier')
               .notNullable();
@@ -48,4 +49,4 @@ exports.up = function(knex) {
     return knex.schema
       .dropTableIfExists('info')
   };
-  
+
