@@ -37,6 +37,7 @@ exports.up = function(knex) {
               .notNullable();
           tbl
               .integer('snacks_per_day')
+              .notNullable();
           tbl 
               .float('goal_multiplier')
               .notNullable();

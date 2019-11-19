@@ -10,7 +10,7 @@ module.exports = {
 };
 
 function add(info) {
-    return db('user-info')
+    return db('info')
     .insert(info)
     .then(id => {
         return findById(id[0])
@@ -18,23 +18,23 @@ function add(info) {
 }
 
 function find() {
-    return db('user-info')
+    return db('info')
 }
 
 function findById(id) {
-    return db('user-info')
+    return db('info')
     .where({ id })
     .first();
 }
 
 function update(id, changes) {
-    return db('user-info')
+    return db('info')
         .where({ id })
         .update(changes)
 }
 
 function remove(id) {
-    return db('user-info')
+    return db('info')
     .where({ id })
     .del();
 }
