@@ -11,7 +11,7 @@ module.exports = {
 };
 
 function add(daily_meals, info_id) {
-    //removeForInfoId(daily_meals[0].info_id)
+    
     return db('daily_meals')
     .insert(daily_meals)
     .then(inserted => {
@@ -31,7 +31,10 @@ function findById(id) {
 
 function findByInfoID(info_id) {
     return db('daily_meals')
-    .where({ info_id })
+    .where({ info_id }).map(dailymeals => {
+        dailymeals.meals = JSON.parse(dailymeals.meals)
+        return dailymeals
+    })
 }
 
 function removeForInfoId(info_id) {

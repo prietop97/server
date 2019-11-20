@@ -1,5 +1,6 @@
 module.exports =  {
-    validateDailyMeals
+    validateDailyMeals,
+    stringifyMeals
 }
 
 function validateDailyMeals(req, res, next) {
@@ -11,5 +12,13 @@ function validateDailyMeals(req, res, next) {
             
         } 
     });
+    next();
+}
+
+function stringifyMeals(req, res, next) {
+    req.body = req.body.map(dailymeals => {
+        dailymeals.meals = JSON.stringify(dailymeals.meals)
+        return dailymeals
+    })
     next();
 }

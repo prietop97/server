@@ -1,8 +1,8 @@
 const express = require('express');
 const Info = require('./user-model');
-const DailyMeals = require('../meals/daily-meals-model');
+const DailyMeals = require('./daily-meals-model');
 const restricted = require('../auth/restricted');
-const { validateDailyMeals }  = require('./user-middleware');
+const { validateDailyMeals, stringifyMeals }  = require('./user-middleware');
 
 const router = express.Router();
 
@@ -91,10 +91,10 @@ router.post('/', restricted, (req, res) => {
     }
 })
 
-router.post('/:id/dailymeals', validateDailyMeals, (req, res) => {
+router.post('/:id/dailymeals', validateDailyMeals, stringifyMeals, (req, res) => {
 
         DailyMeals.removeForInfoId(req.params.id)
-            .then( success => {
+            .then(success => {
                 DailyMeals.add(req.body, req.params.id)
                     .then(saved => {
                         console.log(saved)
