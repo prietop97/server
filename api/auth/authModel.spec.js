@@ -14,5 +14,17 @@ describe('auth model', function() {
             const users = await db('users');
             expect(users).toHaveLength(1);
         });
+
+        it('should insert the provided user', async function() {
+            await add({ username: 'Walter', password: 'password' });
+            await add({ username: 'Saul', password: 'password' });
+
+            const users = await db("users");
+
+            expect(users).toHaveLength(2);
+            expect(users[0].username).toBe('Walter');
+            expect(users[1].username).toBe('Saul');
+
+        });
     })
 })
