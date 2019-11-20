@@ -31,10 +31,11 @@ function findById(id) {
 
 function findByInfoID(info_id) {
     return db('daily_meals')
-    .where({ info_id }).map(dailymeals => {
-        dailymeals.meals = JSON.parse(dailymeals.meals)
-        return dailymeals
-    })
+    .where({ info_id })
+    // .map(dailymeals => {
+    //     dailymeals.meals = JSON.parse(dailymeals.meals)
+    //     return dailymeals
+    // })
 }
 
 function removeForInfoId(info_id) {
