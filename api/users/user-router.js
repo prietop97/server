@@ -1,6 +1,8 @@
 const express = require('express');
 const Info = require('./user-model');
+const DailyMeals = require('./daily-meals-model');
 const restricted = require('../auth/restricted');
+const { validateDailyMeals, stringifyMeals }  = require('./user-middleware');
 
 const router = express.Router();
 
@@ -52,6 +54,22 @@ router.get('/:id', restricted, (req, res) => {
         })
 })
 
+router.get('/:id/dailymeals', (req, res) => {
+    const id = req.params.id;
+
+    DailyMeals.findByInfoID(id)
+        .then(dailymeals => {
+            if(dailymeals) {
+                res.status(200).json(dailymeals)
+            } else {
+                res.status(404).json({ error: 'The daily meal with this ID does not exist'})
+            }
+        })
+        .catch(err =>{
+            res.status(500).json({ error: 'Unable to get daily meals from the database'})
+        })
+})
+
 router.post('/', restricted, (req, res) => {
     const { user_id, gender, birthdate_day, birthdate_month, birthdate_year, height, weight, activity_factor, meals_per_day, snacks_per_day, goal_multiplier } = req.body;
     req.body.user_id = req.user.id;
@@ -73,6 +91,26 @@ router.post('/', restricted, (req, res) => {
     }
 })
 
+router.post('/:id/dailymeals', validateDailyMeals, stringifyMeals, (req, res) => {
+
+        DailyMeals.removeForInfoId(req.params.id)
+            .then(success => {
+                DailyMeals.add(req.body, req.params.id)
+                    .then(saved => {
+                        console.log(saved)
+                        res.status(201).json(saved)
+                    })
+                    .catch(err => {
+                        console.log('500', err)
+                        res.status(500).json({ error: 'Unable to post daily meals into the database'})
+                    })
+                })
+            .catch(err => {
+                console.log('500', err)
+                res.status(500).json({ error: 'Internal server error'})
+            })
+})
+
 router.put('/:id', restricted, (req, res) => {
     const id = req.params.id;
     const { user_id, gender, birthdate_day, birthdate_month, birthdate_year, height, weight, activity_factor, meals_per_day, snacks_per_day, goal_multiplier } = req.body;
@@ -88,6 +126,10 @@ router.put('/:id', restricted, (req, res) => {
                 res.status(500).json({ error: 'Unable to PUT user information to the database'})
             })
     }
+})
+
+router.put('/:id/dailymeals', (req, res) => {
+    
 })
 
 router.delete('/:id', restricted, (req, res) => {
@@ -106,5 +148,6 @@ router.delete('/:id', restricted, (req, res) => {
             res.status(500).json({ error: 'Unable to DELETE user information from the database' })
         })
 })
+
 
 module.exports = router;
