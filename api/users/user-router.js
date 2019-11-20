@@ -2,7 +2,7 @@ const express = require('express');
 const Info = require('./user-model');
 const DailyMeals = require('./daily-meals-model');
 const restricted = require('../auth/restricted');
-const { validateDailyMeals, stringifyMeals }  = require('./user-middleware');
+const { validateDailyMeals, stringifyMeals, addInfoIdToMeals }  = require('./user-middleware');
 
 const router = express.Router();
 
@@ -91,7 +91,7 @@ router.post('/', restricted, (req, res) => {
     }
 })
 
-router.post('/:id/dailymeals', validateDailyMeals, stringifyMeals, (req, res) => {
+router.post('/:id/dailymeals', validateDailyMeals, addInfoIdToMeals, stringifyMeals, (req, res) => {
 
         DailyMeals.removeForInfoId(req.params.id)
             .then(success => {
