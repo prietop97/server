@@ -16,9 +16,8 @@ router.post('/register', (req, res) => {
 
       Users.add(user)
         .then(saved => {
-          const token = getJwtToken(saved);
-          console.log(saved)
-          res.status(201).json({ user_id: saved.id, fullname: saved.fullname, username: saved.username, token});
+          
+          res.status(201).json({ user_id: saved.id, fullname: saved.fullname, username: saved.username, email: saved.email, age: saved.age});
         })
         .catch(error => {
           console.log(error)

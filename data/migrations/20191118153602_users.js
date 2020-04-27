@@ -9,6 +9,17 @@ exports.up = function(knex) {
       tbl
         .string('password')
         .notNullable();
+      tbl
+        .string('fullname')
+        .notNullable();
+
+      tbl
+        .string('email')
+        .notNullable();
+        
+      tbl
+        .integer('age')
+        .notNullable();
     })
   };
   
