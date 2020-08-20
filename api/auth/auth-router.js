@@ -23,7 +23,7 @@ router.post("/register", validateAuthBody, (req, res) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).json({ error: "Unable to insert user to database" });
+      res.status(500).json({ message: "Unable to insert user to database" });
     });
 });
 
@@ -31,7 +31,7 @@ router.post("/login", (req, res) => {
   if (!req.body.username || !req.body.password) {
     return res
       .status(400)
-      .json({ error: "Please provide username and password" });
+      .json({ message: "Please provide username and password" });
   }
   req.body.username = req.body.username.toLowerCase();
   let { username, password } = req.body;
@@ -51,11 +51,13 @@ router.post("/login", (req, res) => {
           token,
         });
       } else {
-        res.status(401).json({ error: "Invalid Credentials" });
+        res.status(401).json({ message: "Invalid Credentials" });
       }
     })
     .catch((error) => {
-      res.status(500).json({ error: "Unable to retrieve user from database" });
+      res
+        .status(500)
+        .json({ message: "Unable to retrieve user from database" });
     });
 });
 
